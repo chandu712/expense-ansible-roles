@@ -19,7 +19,7 @@
 - name: Copy backend conf
   ansible.builtin.template:  # copy the expense configuration to dest folder in remote server
     src: expense.conf.j2
-    dest: etc/nginx/default.d/expense.conf
+    dest: /etc/nginx/default.d/expense.conf
   notify:
   - restart nginx
   # Ansible handlers are notifiers in ansible, when ther is some change in configuration only, handlers notify the paticular task
