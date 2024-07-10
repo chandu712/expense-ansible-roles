@@ -24,7 +24,7 @@
 - name: Check DB connection
   community.mysql.mysql_info:
     login_user: root
-    login_password: ExpenseApp@1
+    login_password: "{{ mysql_root_password }}"
     login_host: "{{ login_host }}"
     filter: version         #if we get errors, it means password is not setup
   ignore_errors: yes
