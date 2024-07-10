@@ -1,3 +1,4 @@
 # all variables related to Db can be mentioned here
 
 mysql_root_password: ExpenseApp@1
+login_host: db.chandudevops.online
