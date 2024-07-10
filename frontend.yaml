@@ -1,0 +1,5 @@
+- name: Configure frontend server
+  hosts: frontend
+  become: yes
+  roles:
+  - frontend   #name of the role

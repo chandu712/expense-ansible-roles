@@ -1,0 +1,40 @@
+# All tasks associated with db can be placed here
+
+- name: Install mysql server
+  ansible.builtin.dnf:
+    name: mysql-server
+    state: latest  # Install latest version of mysql server
+
+- name: Start and Enable Mysql server
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+# Ansible community module is not developed by ansible people, we can develop modules and contribute to ansible.
+# install python mysql dependencies(libraries) to connect to mysql server from ansible
+- name: Install python Mysql dependencies
+  ansible.builtin.pip:
+    name:
+    - PyMySQL
+    - cryptography
+    executable: pip3.9
+
+# Check password is already setup or not
+- name: Check DB connection
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: ExpenseApp@1
+    login_host: "{{login_host}}"
+    filter: version         #if we get errors, it means password is not setup
+  ignore_errors: yes
+  register: mysql_connection_output
+
+- name: print output
+  ansible.builtin.debug:
+    msg: "Output: {{mysql_connection_output}}"
+
+- name: Setup root password
+  ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ mysql_root_password }}"  # checks for variable 
+  # name in play level, task level and mian.yaml in vars folder
+  when: mysql_connection_output.failed is true

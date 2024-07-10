@@ -1,0 +1,17 @@
+- name: delete app directory
+  ansible.builtin.file:
+    path: "{{ APP_LOCATION }}"
+    state: absent  # deletes folder if it exists, otherwise we will get error. we need to ignore errors
+  ignore_errors: yes
+
+- name: Create app directory
+  ansible.builtin.file:
+    path: "{{ APP_LOCATION }}"
+    state: directory  
+  
+
+- name: Download and extract code
+  ansible.builtin.unarchive:
+    src: "https://expense-builds.s3.us-east-1.amazonaws.com/expense-{{ component }}-v2.zip"
+    dest: "{{ APP_LOCATION }}"
+    remote_src: yes

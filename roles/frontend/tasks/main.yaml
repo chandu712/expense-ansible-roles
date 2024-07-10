@@ -1,0 +1,31 @@
+- name: Install nginx server
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+- name: Start and enable nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Run app-pre-req
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-pre-req  # .yaml is not required
+    # Here we are running app-pre-req file from common roles 
+    
+# Copy expense configuration file to remote server
+
+- name: Copy backend conf
+  ansible.builtin.template:  # copy the expense configuration to dest folder in remote server
+    src: expense.conf.j2
+    dest: etc/nginx/default.d/expense.conf
+  notify:
+  - restart nginx
+  # Ansible handlers are notifiers in ansible, when ther is some change in configuration only, handlers notify the paticular task
+
+# If there are some changes in the configuration, we need to restart otherwise we can't guarantee the changes will be effected.
+# - name: restart nginx
+#   ansible.builtin.service:
+#     name: nginx
+#     state: restarted

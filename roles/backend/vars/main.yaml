@@ -1,0 +1,6 @@
+login_user: root
+login_password: ExpenseApp@1
+login_host: db.chandudevops.online
+DB_HOST: db.chandudevops.online
+APP_LOCATION: /app
+component: backend
